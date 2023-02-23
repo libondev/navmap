@@ -2,6 +2,12 @@ import './style.css'
 
 interface Options {
   container?: Element | string
+
+  /**
+   * The width of the canvas element for final rendering
+   * @default 80
+   */
+  canvasWidth?: number
 }
 
 function createCanvasElement () {
@@ -23,13 +29,17 @@ function createCanvasElement () {
 }
 
 function navmap (options?: Options) {
-  const settings = Object.assign({
-    container: document.body
+  const {
+    container,
+    canvasWidth
+  } = Object.assign({
+    container: document.body,
+    canvasWidth: 80
   }, options)
 
-  const viewport: HTMLElement = typeof settings.container === 'string'
-    ? document.querySelector(settings.container)!
-    : settings.container
+  const viewport: HTMLElement = typeof container === 'string'
+    ? document.querySelector(container)!
+    : container
 
   if (viewport == null) {
     throw new Error('[navmap error]: Container not found!')
@@ -40,17 +50,17 @@ function navmap (options?: Options) {
   let scale: number
   let unsubscribe: () => void
 
-  function draw () {
+  function drawElementRects () {
     const { clientHeight } = viewport
 
     scale = canvas.clientHeight / clientHeight
 
     context.setTransform(1, 0, 0, 1, 0, 0)
-    context.clearRect(0, 0, canvas.width, canvas.height)
+    context.clearRect(0, 0, canvasWidth, canvas.height)
 
     // 绘制底纹
     context.fillStyle = '#fff'
-    context.fillRect(0, 0, canvas.width, canvas.height)
+    context.fillRect(0, 0, canvasWidth, canvas.height)
 
     context.scale(1, scale)
 
@@ -59,13 +69,14 @@ function navmap (options?: Options) {
     context.beginPath()
     context.fillStyle = '#f00'
     elements.forEach(el => {
-      const { top, height } = el.getBoundingClientRect()
+      const { offsetHeight, offsetTop } = el as HTMLElement
 
-      context.rect(0, top, canvas.width, height)
+      context.rect(0, offsetTop, canvasWidth, offsetHeight)
     })
 
     console.log(elements)
 
+    context.closePath()
     context.fill()
   }
 
@@ -77,12 +88,12 @@ function navmap (options?: Options) {
       timeoutId = window.setTimeout(() => {
         canvas.height = window.innerHeight
 
-        draw()
+        drawElementRects()
       }, 200)
     }
 
     window.addEventListener('resize', resize)
-    window.addEventListener('scroll', draw)
+    window.addEventListener('scroll', drawElementRects)
 
     return () => {
       clearTimeout(timeoutId)
@@ -91,7 +102,7 @@ function navmap (options?: Options) {
   }
 
   function initialize () {
-    draw()
+    drawElementRects()
 
     unsubscribe = bindEvents(canvas)
   }

@@ -5,9 +5,15 @@ interface Options {
 
   /**
    * The width of the canvas element for final rendering
-   * @default 80
+   * @default 20
    */
   canvasWidth?: number
+
+  /**
+   * The level of headings to be collected
+   * @default [1,2,3,4,5]
+   */
+  headingLevels?: []
 }
 
 function createCanvasElement ({ width, height }: { width: number, height: number }) {
@@ -31,8 +37,10 @@ function createCanvasElement ({ width, height }: { width: number, height: number
 function navmap (options?: Options) {
   const {
     container,
-    canvasWidth
+    canvasWidth,
+    headingLevels
   } = Object.assign({
+    headingLevels: [1, 2, 3, 4, 5],
     container: document.body,
     canvasWidth: 20
   }, options)
@@ -49,6 +57,7 @@ function navmap (options?: Options) {
 
   let scale: number
   let unsubscribe: () => void
+  let elements: HTMLElement[]
 
   function drawElementRects () {
     const { clientHeight } = viewport
@@ -64,20 +73,18 @@ function navmap (options?: Options) {
 
     context.scale(1, scale)
 
-    const elements = [...document.querySelectorAll('h1,h2,h3,h4,h5')]
-
     context.beginPath()
     context.fillStyle = '#f00'
-    elements.forEach(el => {
-      const { offsetHeight, offsetTop } = el as HTMLElement
 
+    elements.forEach(({ offsetHeight, offsetTop }) => {
       context.rect(0, offsetTop, canvasWidth, offsetHeight)
     })
 
-    console.log(elements)
-
     context.closePath()
     context.fill()
+
+    context.fillStyle = 'rgba(0, 0, 0, .2)'
+    context.fillRect(0, document.documentElement.scrollTop, canvasWidth, window.innerHeight)
   }
 
   function bindEvents (canvas: HTMLCanvasElement) {
@@ -98,10 +105,13 @@ function navmap (options?: Options) {
     return () => {
       clearTimeout(timeoutId)
       window.removeEventListener('resize', resize)
+      window.removeEventListener('scroll', drawElementRects)
     }
   }
 
   function initialize () {
+    elements = [...document.querySelectorAll('h' + headingLevels.join(',h'))] as HTMLElement[]
+
     drawElementRects()
 
     document.body.classList.add('hide-scrollbar')

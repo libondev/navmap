@@ -4,3 +4,11 @@
   top: 0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+.hide-scrollbar {
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+  overflow:-moz-scrollbars-none
+}
+
+.hide-scrollbar::-webkit-scrollbar {display: none}

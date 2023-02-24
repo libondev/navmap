@@ -10,12 +10,12 @@ interface Options {
   canvasWidth?: number
 }
 
-function createCanvasElement () {
+function createCanvasElement ({ width, height }: { width: number, height: number }) {
   const canvas = Object.assign(
     document.createElement('canvas'),
     {
-      width: 80,
-      height: window.innerHeight,
+      width,
+      height,
       className: 'navmap-canvas'
     }
   )
@@ -34,7 +34,7 @@ function navmap (options?: Options) {
     canvasWidth
   } = Object.assign({
     container: document.body,
-    canvasWidth: 80
+    canvasWidth: 20
   }, options)
 
   const viewport: HTMLElement = typeof container === 'string'
@@ -45,7 +45,7 @@ function navmap (options?: Options) {
     throw new Error('[navmap error]: Container not found!')
   }
 
-  const { canvas, context } = createCanvasElement()
+  const { canvas, context } = createCanvasElement({ width: canvasWidth, height: window.innerHeight })
 
   let scale: number
   let unsubscribe: () => void
@@ -104,10 +104,12 @@ function navmap (options?: Options) {
   function initialize () {
     drawElementRects()
 
+    document.body.classList.add('hide-scrollbar')
     unsubscribe = bindEvents(canvas)
   }
 
   function destroy () {
+    document.body.classList.remove('hide-scrollbar')
     unsubscribe()
     canvas.remove()
   }

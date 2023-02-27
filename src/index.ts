@@ -13,7 +13,7 @@ interface Options {
    * The level of headings to be collected
    * @default [1,2,3,4,5]
    */
-  headingLevels?: []
+  elementStyles?: []
 }
 
 function createCanvasElement ({ width, height }: { width: number, height: number }) {
@@ -34,6 +34,10 @@ function createCanvasElement ({ width, height }: { width: number, height: number
   }
 }
 
+// function createHeadingElements(container: HTMLElement) {
+
+// }
+
 function navmap (options?: Options) {
   const {
     container,
@@ -42,7 +46,7 @@ function navmap (options?: Options) {
   } = Object.assign({
     headingLevels: [1, 2, 3, 4, 5],
     container: document.body,
-    canvasWidth: 20
+    canvasWidth: 10
   }, options)
 
   const viewport: HTMLElement = typeof container === 'string'
@@ -58,6 +62,8 @@ function navmap (options?: Options) {
   let scale: number
   let unsubscribe: () => void
   let elements: HTMLElement[]
+
+  const elementPositions: number[][] = []
 
   function drawElementRects () {
     const { clientHeight } = viewport
@@ -96,7 +102,7 @@ function navmap (options?: Options) {
         canvas.height = window.innerHeight
 
         drawElementRects()
-      }, 200)
+      }, 100)
     }
 
     window.addEventListener('resize', resize)
@@ -111,6 +117,24 @@ function navmap (options?: Options) {
 
   function initialize () {
     elements = [...document.querySelectorAll('h' + headingLevels.join(',h'))] as HTMLElement[]
+
+    const fragment = Object.assign(document.createElement('div'), { className: 'heading-container' })
+
+    elements.forEach((item, index) => {
+      item.setAttribute('data-nav-key', String(index))
+      const position = [item.offsetTop, item.offsetHeight]
+
+      const cloneElement = Object.assign(item.cloneNode(true), {
+        className: 'map-heading',
+        style: `top: ${position[0]}px`
+      })
+
+      elementPositions.push(position)
+
+      fragment.appendChild(cloneElement)
+    })
+
+    document.body.append(fragment)
 
     drawElementRects()
 

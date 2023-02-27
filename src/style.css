@@ -10,5 +10,23 @@
   -ms-overflow-style:none;
   overflow:-moz-scrollbars-none
 }
-
 .hide-scrollbar::-webkit-scrollbar {display: none}
+
+.heading-container {
+  position: fixed;
+  right: 15px;
+  top: 0;
+  width: 100px;
+  overflow: hidden;
+  height: 100vh;
+  text-align: right;
+}
+
+.map-heading {
+  position: absolute;
+  right: 0;
+  width: max-content;
+  font-weight: normal;
+  cursor: pointer;
+  font-size: 12px
+}

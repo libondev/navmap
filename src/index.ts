@@ -120,13 +120,15 @@ function navmap (options?: Options) {
 
     const fragment = Object.assign(document.createElement('div'), { className: 'heading-container' })
 
+    drawElementRects()
+
     elements.forEach((item, index) => {
       item.setAttribute('data-nav-key', String(index))
       const position = [item.offsetTop, item.offsetHeight]
 
       const cloneElement = Object.assign(item.cloneNode(true), {
         className: 'map-heading',
-        style: `top: ${position[0]}px`
+        style: `top: ${position[0] * scale}px`
       })
 
       elementPositions.push(position)
@@ -135,8 +137,6 @@ function navmap (options?: Options) {
     })
 
     document.body.append(fragment)
-
-    drawElementRects()
 
     document.body.classList.add('hide-scrollbar')
     unsubscribe = bindEvents(canvas)

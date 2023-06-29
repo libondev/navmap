@@ -1,28 +1,76 @@
-import type { UserOptions, Options } from '../types'
-import { BoardsPlugin, PresetPlugin } from '../plugins/preset'
+import { PresetPlugin } from '../plugins/preset'
+import type { Options, UserOptions } from '../types'
 
+export function getCanvasElement (options?: UserOptions) {
+  const canvasEl = Object.assign(
+    document.createElement('canvas'),
+    {
+      width: options.canvas?.width ?? 20,
+      height: options.canvas?.height ?? window.innerHeight,
+      className: `navmap-canvas ${options.canvas?.className || ''}`
+    }
+  )
 
-export function getDefaultConfig(options: UserOptions): Options {
-  if (options.root == null) {
-    options.root = document.body
-    __DEV__ && console.warn('[navmap]: The root must be a HTML element, now use "document.body".')
+  return canvasEl
+}
+
+export function getDefaultConfig (options: UserOptions): Options {
+  options.viewport ??= document.body
+  options.plugins ??= Array.isArray(options.plugins) ? options.plugins : []
+
+  if (__DEV__ && 'viewport' in options && options.viewport == null) {
+    console.warn('[navmap]: The viewport must be a HTML element, now use "document.body".')
   }
 
-  if (options.plugins == null) {
-    options.plugins = []
-  } else if (!Array.isArray(options.plugins)) {
+  if (__DEV__ && !Array.isArray(options.plugins)) {
     options.plugins = [options.plugins]
-    __DEV__ && console.warn('[navmap]: The plugins must be an array, now use "[plugins]".')
+    console.warn('[navmap]: The plugins must be an array, now use "[plugins]".')
   }
 
   const normalizedPlugins = options.plugins.map(plugin => plugin(options))
 
   return {
-    root: options.root,
+    viewport: options.viewport,
+    canvas: getCanvasElement(options),
     plugins: [
-      BoardsPlugin(options),
       PresetPlugin(options),
       ...normalizedPlugins
     ]
+  }
+}
+
+// Gets all the correct plugin hooks
+export function createPluginHooks ({ canvas, viewport, plugins }: Options) {
+  const init = []
+  const draw = []
+  const render = []
+  const destroy = []
+
+  plugins.forEach(plugin => {
+    if (typeof plugin.init === 'function') {
+      init.push(plugin.init.bind(plugin))
+    }
+
+    if (typeof plugin.draw === 'function') {
+      draw.push(plugin.draw.bind(plugin))
+    }
+
+    if (typeof plugin.render === 'function') {
+      render.push(plugin.render.bind(plugin))
+    }
+
+    if (typeof plugin.destroy === 'function') {
+      destroy.push(plugin.destroy.bind(plugin))
+    }
+  })
+
+  const ctx = canvas.getContext('2d')
+  const opt = { canvas, viewport }
+
+  return {
+    init: () => { init.forEach(fn => fn(ctx, opt)) },
+    draw: () => { draw.forEach(fn => fn(ctx, opt)) },
+    render: () => { render.forEach(fn => fn(ctx, opt)) },
+    destroy: () => { destroy.forEach(fn => fn(ctx, opt)) }
   }
 }

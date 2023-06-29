@@ -1,5 +1,9 @@
 import navmap from './core/index'
 
-navmap({
-  root: document.querySelector('#app')!
-})
+navmap(
+  // {
+  //   canvas: {
+  //     width: 500
+  //   }
+  // }
+)

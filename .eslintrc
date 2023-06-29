@@ -5,17 +5,17 @@
   "env": {
     "browser": true,
     "es2021": true,
-    "node": true,
-    "__DEV__": true
+    "node": true
   },
 
   "globals": {
     "window": true,
     "document": true,
-    "globalThis": true
+    "globalThis": true,
+    "__DEV__": true
   },
 
-  "parserUserOptions": {
+  "parserOptions": {
     "project": "./tsconfig.json",
     "ecmaVersion": "latest",
     "sourceType": "module"
@@ -39,6 +39,9 @@
   ],
 
   "settings": {
+    "node": {
+      "version": ">=16.0.0"
+    },
     "import/resolver": {
       "node": { "extensions": [".js", ".mjs"] }
     }
@@ -49,6 +52,7 @@
     "import/first": "error",
     "no-multi-spaces": "error",
     "no-throw-literal": "error",
+    // "n/no-missing-import": "off",
     "n/no-extraneous-import": "off",
     "import/no-duplicates": "error",
     "simple-import-sort/imports": "error",
@@ -56,8 +60,6 @@
     "import/newline-after-import": "error",
     "object-curly-spacing": ["error", "always"],
     "max-len": ["error", { "code": 120, "tabWidth": 2 }],
-    "@typescript-eslint/no-non-null-assertion": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
     "padding-line-between-statements": [      "error",
       { "blankLine": "always", "next": ["block", "block-like"], "prev": ["block", "block-like"] },
       { "blankLine": "any", "next": ["case", "default"], "prev": "case" },
@@ -71,6 +73,17 @@
       { "blankLine": "always", "next": "*", "prev": ["import", "cjs-import"] },
       { "blankLine": "any", "next": ["import", "cjs-import"], "prev": ["import", "cjs-import"] }
     ],
+
+    "@typescript-eslint/key-spacing": "off",
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/prefer-nullish-coalescing": "off",
+    "@typescript-eslint/prefer-function-type": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/promise-function-async": "off",
+    "@typescript-eslint/consistent-type-assertions": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/indent": ["error", 2, {
       "SwitchCase": 1,
       "VariableDeclarator": 1,
@@ -108,15 +121,24 @@
         "ClassBody.body > PropertyDefinition[decorators.length > 0] > .key"
       ],
       "offsetTernaryExpressions": true
-    }],
-    "n/no-missing-import": "off",
-    "import/no-unresolved": "off"
+    }]
   },
+
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "n/no-missing-import": "off",
+        "import/no-unresolved": "off"
+      }
+    }
+  ],
 
   "ignorePatterns": [
     "*.min.*",
     "*.d.ts",
     "CHANGELOG.md",
+    "**/*.html",
     "dist",
     "LICENSE*",
     "output",

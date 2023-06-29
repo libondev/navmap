@@ -1,5 +1,3 @@
 # navmap
 
-Create by banlify <banlify@163.com>
-
-GitHub
+Show all the titles on your page in the scrollbar.

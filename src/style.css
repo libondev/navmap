@@ -1,16 +1,19 @@
+html {
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+  overflow-y:-moz-scrollbars-none
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  width:0;
+  display: none
+}
+
 .navmap-canvas {
   position: fixed;
   right: 0;
   top: 0;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
-.hide-scrollbar {
-  scrollbar-width:none;
-  -ms-overflow-style:none;
-  overflow:-moz-scrollbars-none
-}
-.hide-scrollbar::-webkit-scrollbar {display: none}
 
 .heading-container {
   position: fixed;

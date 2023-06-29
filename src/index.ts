@@ -1,6 +1,6 @@
 import './style.css'
 
-interface Options {
+interface UserOptions {
   container?: Element | string
 
   /**
@@ -38,7 +38,7 @@ function createCanvasElement ({ width, height }: { width: number, height: number
 
 // }
 
-function navmap (options?: Options) {
+function navmap (options?: UserOptions) {
   const {
     container,
     canvasWidth,

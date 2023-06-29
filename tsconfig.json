@@ -1,7 +1,8 @@
 {
-  "include": ["src/**/*.ts", "vite.config.*"],
-  "compilerOptions": {
+  "include": ["src/**/*.ts", "vite.config.*", "env.d.ts"],
+  "compilerUserOptions": {
     "strict": true,
+    "noEmit": true,
     "types": ["node"],
     "target": "ESNext",
     "module": "ESNext",

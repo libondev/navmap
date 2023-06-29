@@ -1,5 +1,5 @@
-import navmap from './index'
+import navmap from './core/index'
 
 navmap({
-  container: document.querySelector('#app')!
+  root: document.querySelector('#app')!
 })

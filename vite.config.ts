@@ -1,3 +1,4 @@
+import replace from '@rollup/plugin-replace'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 
@@ -12,7 +13,7 @@ export default defineConfig(({ mode }) => {
         formats: ['es', 'cjs'],
         fileName: '[name]'
       },
-      rollupOptions: {
+      rollupUserOptions: {
         external: [],
         output: {
           exports: 'named',
@@ -26,6 +27,10 @@ export default defineConfig(({ mode }) => {
         staticImport: true,
         entryRoot: './src',
         outputDir: './dist'
+      }),
+      replace({
+        preventAssignment: true,
+        __DEV__: mode === 'development'
       })
     ]
   }

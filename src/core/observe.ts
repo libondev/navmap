@@ -1,6 +1,6 @@
 import type { Options } from '../types'
 
-export function createViewObserver (
+export function createElementObserver (
   root: Options['viewport'],
   renderHandler: MutationCallback
 ) {
@@ -14,8 +14,19 @@ export function createViewObserver (
   }
 }
 
-export function onWindowSizeChange (fn) {
-  window.addEventListener('resize', fn)
+export function createScrollObserver (
+  viewport: Options['viewport'],
+  scrollHandler: EventListener
+) {
+  document.addEventListener('scroll', scrollHandler, { passive: true })
 
-  return () => { window.removeEventListener('resize', fn) }
+  return () => {
+    document.removeEventListener('scroll', scrollHandler)
+  }
 }
+
+// export function onWindowSizeChange (fn) {
+//   window.addEventListener('resize', fn)
+
+//   return () => { window.removeEventListener('resize', fn) }
+// }

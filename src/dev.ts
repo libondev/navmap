@@ -1,9 +1,9 @@
+// import type { Plugin } from './core'
 import navmap from './core/index'
 
 navmap(
-  // {
-  //   canvas: {
-  //     width: 500
-  //   }
-  // }
+  {
+    plugins: [
+    ]
+  }
 )

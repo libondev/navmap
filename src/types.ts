@@ -4,10 +4,11 @@ export type LifecycleFn = (
 ) => void
 
 export type Plugin = (config: UserOptions) => ({
-  init: LifecycleFn
-  draw: LifecycleFn
-  render: LifecycleFn
-  destroy: LifecycleFn
+  enforce?: 'pre' | 'post'
+  init?: LifecycleFn
+  draw?: LifecycleFn
+  render?: LifecycleFn
+  destroy?: LifecycleFn
 })
 
 export interface CanvasConfig {
@@ -24,9 +25,8 @@ export interface UserOptions {
   }
 }
 
-export type Options = Required<
-  Omit<UserOptions, 'plugins' | 'canvas'>
-> & {
+export interface Options {
+  viewport: HTMLElement
   canvas: HTMLCanvasElement
   plugins: Array<ReturnType<Plugin>>
 }

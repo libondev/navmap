@@ -28,17 +28,21 @@ export const PresetPlugin: Plugin = () => ({
     const scaleRatio = canvas.offsetHeight / viewport.offsetHeight
     const scrollTop = visualViewport.pageTop
 
-    // 清除画布
-    ctx.clearRect(0, 0, width, height)
+    ctx.beginPath()
 
+    ctx.fillStyle = '#f00000'
     // 绘制标题块
     this._cachedHeadingPositions.forEach(({ offsetHeight, offsetTop }) => {
       // 标题块的位置是固定的, 但是高度是缩放的, 所以需要乘以缩放比例
-      ctx.fillRect(0, offsetTop * scaleRatio, width, offsetHeight * scaleRatio)
+      ctx.rect(0, offsetTop * scaleRatio, width, offsetHeight * scaleRatio)
     })
+    ctx.closePath()
+
+    ctx.fill()
 
     // 绘制视口
-    ctx.strokeRect(0, scrollTop * scaleRatio, width, height * scaleRatio)
+    ctx.fillStyle = '#000'
+    ctx.fillRect(0, scrollTop * scaleRatio, width, height * scaleRatio)
   },
 
   destroy (_, { canvas, viewport }) {

@@ -14,19 +14,20 @@ export function createElementObserver (
   }
 }
 
-export function createScrollObserver (
-  viewport: Options['viewport'],
-  scrollHandler: EventListener
+export function createWindowsObserver (
+  config: Options,
+  redraw: () => void
 ) {
-  document.addEventListener('scroll', scrollHandler, { passive: true })
+  const resizeCanvasHeight = () => {
+    config.canvas.height = window.innerHeight
+    redraw()
+  }
+
+  document.addEventListener('scroll', redraw, { passive: true })
+  window.addEventListener('resize', resizeCanvasHeight, { passive: true })
 
   return () => {
-    document.removeEventListener('scroll', scrollHandler)
+    document.removeEventListener('scroll', redraw)
+    window.removeEventListener('resize', resizeCanvasHeight)
   }
 }
-
-// export function onWindowSizeChange (fn) {
-//   window.addEventListener('resize', fn)
-
-//   return () => { window.removeEventListener('resize', fn) }
-// }

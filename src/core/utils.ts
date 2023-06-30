@@ -71,7 +71,10 @@ export function createPluginHooks ({ canvas, viewport, plugins }: Options) {
 
   return {
     init: () => { init.forEach(fn => fn(ctx, opt)) },
-    draw: () => { draw.forEach(fn => fn(ctx, opt)) },
+    draw: () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      draw.forEach(fn => fn(ctx, opt))
+    },
     render: () => { render.forEach(fn => fn(ctx, opt)) },
     destroy: () => { destroy.forEach(fn => fn(ctx, opt)) }
   }

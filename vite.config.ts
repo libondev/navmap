@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
       outDir: './dist',
       target: 'modules',
       lib: {
-        entry: './src/index.ts',
+        entry: './src/core/index.ts',
         formats: ['es', 'cjs'],
         fileName: '[name]'
       },

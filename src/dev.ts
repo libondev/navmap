@@ -1,9 +1,12 @@
 // import type { Plugin } from './core'
 import navmap from './core/index'
 
-navmap(
+const cleanup = navmap(
   {
     plugins: [
     ]
   }
 )
+
+console.log(cleanup)
+// cleanup()

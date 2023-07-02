@@ -1,12 +1,12 @@
 import type { Options } from '../types'
 
 export function createElementObserver (
-  root: Options['viewport'],
-  renderHandler: MutationCallback
+  { viewport }: Options,
+  updater: MutationCallback
 ) {
-  const observe = new MutationObserver(renderHandler)
+  const observe = new MutationObserver(updater)
 
-  observe.observe(root, { childList: true, subtree: true })
+  observe.observe(viewport, { childList: true, subtree: true })
 
   return () => {
     observe.takeRecords()
@@ -15,19 +15,19 @@ export function createElementObserver (
 }
 
 export function createWindowsObserver (
-  config: Options,
-  redraw: () => void
+  { canvas }: Options,
+  drawer: () => void
 ) {
   const resizeCanvasHeight = () => {
-    config.canvas.height = window.innerHeight
-    redraw()
+    canvas.height = window.innerHeight
+    drawer()
   }
 
-  document.addEventListener('scroll', redraw, { passive: true })
+  document.addEventListener('scroll', drawer, { passive: true })
   window.addEventListener('resize', resizeCanvasHeight, { passive: true })
 
   return () => {
-    document.removeEventListener('scroll', redraw)
+    document.removeEventListener('scroll', drawer)
     window.removeEventListener('resize', resizeCanvasHeight)
   }
 }

@@ -7,7 +7,8 @@ export function getCanvasElement (options?: UserOptions) {
     {
       width: options.canvas?.width ?? 20,
       height: options.canvas?.height ?? window.innerHeight,
-      className: `navmap-canvas ${options.canvas?.className || ''}`
+      className: `navmap-canvas ${options.canvas?.className || ''}`,
+      style: 'position:fixed;right:0;top:0'
     }
   )
 
@@ -15,17 +16,15 @@ export function getCanvasElement (options?: UserOptions) {
 }
 
 export function getDefaultConfig (options: UserOptions): Options {
-  options.viewport ??= document.body
-  options.plugins ??= Array.isArray(options.plugins) ? options.plugins : []
-
   if (__DEV__ && 'viewport' in options && options.viewport == null) {
-    console.warn('[navmap]: The viewport must be a HTML element, now use "document.body".')
+    console.warn('[navmap]: The viewport must be a HTML element.')
   }
+  options.viewport ??= document.body
 
   if (__DEV__ && !Array.isArray(options.plugins)) {
-    options.plugins = [options.plugins]
-    console.warn('[navmap]: The plugins must be an array, now use "[plugins]".')
+    console.warn('[navmap]: The plugins must be an array.')
   }
+  options.plugins = options.plugins ? Array.isArray(options.plugins) ? options.plugins : [options.plugins] : []
 
   const normalizedPlugins = options.plugins.map(plugin => plugin(options))
 
@@ -43,7 +42,7 @@ export function getDefaultConfig (options: UserOptions): Options {
 export function createPluginHooks ({ canvas, viewport, plugins }: Options) {
   const init = []
   const draw = []
-  const render = []
+  const update = []
   const destroy = []
 
   plugins.forEach(plugin => {
@@ -57,8 +56,8 @@ export function createPluginHooks ({ canvas, viewport, plugins }: Options) {
       draw[insertMethod](plugin.draw.bind(plugin))
     }
 
-    if (typeof plugin.render === 'function') {
-      render[insertMethod](plugin.render.bind(plugin))
+    if (typeof plugin.update === 'function') {
+      update[insertMethod](plugin.update.bind(plugin))
     }
 
     if (typeof plugin.destroy === 'function') {
@@ -75,7 +74,7 @@ export function createPluginHooks ({ canvas, viewport, plugins }: Options) {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       draw.forEach(fn => fn(ctx, opt))
     },
-    render: () => { render.forEach(fn => fn(ctx, opt)) },
+    update: () => { update.forEach(fn => fn(ctx, opt)) },
     destroy: () => { destroy.forEach(fn => fn(ctx, opt)) }
   }
 }

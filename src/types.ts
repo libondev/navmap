@@ -1,5 +1,5 @@
-export type LifecycleFn<Context> = (
-  this: Context,
+export type LifecycleFn<PluginContext> = (
+  this: PluginContext,
   ctx: CanvasRenderingContext2D,
   opt: Pick<Options, 'viewport' | 'canvas'>
 ) => void

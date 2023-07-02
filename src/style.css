@@ -8,30 +8,3 @@ html {
   width:0;
   display: none
 }
-
-.navmap-canvas {
-  position: fixed;
-  right: 0;
-  top: 0;
-}
-
-.heading-container {
-  position: fixed;
-  right: 15px;
-  top: 0;
-  width: 100px;
-  overflow: hidden;
-  height: 100vh;
-  text-align: right;
-}
-
-.map-heading {
-  position: absolute;
-  right: 0;
-  width: max-content;
-  font-weight: normal;
-  cursor: pointer;
-  font-size: 12px;
-  height:12px;
-  margin: 0
-}

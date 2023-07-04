@@ -1,7 +1,10 @@
-import { PresetPlugin } from '../plugins/preset'
+// import { Headings } from '../plugins/headings'
+import { Scrollbar } from '../plugins/scrollbar'
 import type { Options, UserOptions } from '../types'
 
-export function getCanvasElement (options?: UserOptions) {
+export type PluginStates = ReturnType<typeof createPluginStates>
+
+export function getCanvasElement (options: UserOptions) {
   const canvasEl = Object.assign(
     document.createElement('canvas'),
     {
@@ -15,7 +18,7 @@ export function getCanvasElement (options?: UserOptions) {
   return canvasEl
 }
 
-export function getDefaultConfig (options: UserOptions): Options {
+export function getDefaultConfig (options: UserOptions, states: PluginStates) {
   if (__DEV__ && 'viewport' in options && options.viewport == null) {
     console.warn('[navmap]: The viewport must be a HTML element.')
   }
@@ -24,22 +27,32 @@ export function getDefaultConfig (options: UserOptions): Options {
   if (__DEV__ && !Array.isArray(options.plugins)) {
     console.warn('[navmap]: The plugins must be an array.')
   }
+
+  // convert to array
   options.plugins = options.plugins ? Array.isArray(options.plugins) ? options.plugins : [options.plugins] : []
 
-  const normalizedPlugins = options.plugins.map(plugin => plugin(options))
+  options.plugins.unshift(Scrollbar)
+
+  const normalizedPlugins = options.plugins.map(plugin => plugin(states))
 
   return {
     viewport: options.viewport as HTMLElement,
     canvas: getCanvasElement(options),
-    plugins: [
-      PresetPlugin(options),
-      ...normalizedPlugins
-    ]
+    plugins: normalizedPlugins
+  } as Options
+}
+
+// all plugins share the same states
+export function createPluginStates () {
+  return {
+    scrollTop: 0,
+    scaleRatio: 1,
+    scrollHeight: 0
   }
 }
 
 // Gets all the correct plugin hooks
-export function createPluginHooks ({ canvas, viewport, plugins }: Options) {
+export function resolvePluginHooks ({ canvas, viewport, plugins }: Options) {
   const init = []
   const draw = []
   const update = []

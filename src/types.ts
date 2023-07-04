@@ -1,3 +1,5 @@
+import type { PluginStates } from './core/utils'
+
 export type LifecycleFn<PluginContext> = (
   this: PluginContext,
   ctx: CanvasRenderingContext2D,
@@ -5,17 +7,13 @@ export type LifecycleFn<PluginContext> = (
 ) => void
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Plugin<Params = Record<string, any>> = (config: UserOptions) => ({
+export type Plugin<Params = Record<string, any>> = (config: PluginStates) => ({
   enforce?: 'pre' | 'post'
   init?: LifecycleFn<Params>
   draw?: LifecycleFn<Params>
   update?: LifecycleFn<Params>
   destroy?: LifecycleFn<Params>
 } & Params)
-
-export interface CanvasConfig {
-  className?: string
-}
 
 export interface UserOptions {
   viewport?: HTMLElement | Element

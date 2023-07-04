@@ -1,4 +1,5 @@
 import type { Options } from '../types'
+import type { PluginStates } from './utils'
 
 export function createElementObserver (
   { viewport }: Options,
@@ -15,19 +16,32 @@ export function createElementObserver (
 }
 
 export function createWindowsObserver (
-  { canvas }: Options,
-  drawer: () => void
+  { config: { canvas, viewport }, states, draw, init }:
+  { config: Options, states: PluginStates, draw: () => void, init: () => void }
 ) {
   const resizeCanvasHeight = () => {
-    canvas.height = window.innerHeight
-    drawer()
+    states.scaleRatio = (canvas.height = window.innerHeight) / viewport.offsetHeight
+    states.scrollHeight = canvas.height * states.scaleRatio
+    states.scrollTop = visualViewport.pageTop
+    draw()
   }
 
-  document.addEventListener('scroll', drawer, { passive: true })
+  const scrollDrawerHandle = () => {
+    states.scrollTop = visualViewport.pageTop
+    draw()
+  }
+
+  // next frame
+  new Promise<void>((resolve) => {
+    init() // trigger plugins update hook
+    resolve()
+  }).then(resizeCanvasHeight)
+
   window.addEventListener('resize', resizeCanvasHeight, { passive: true })
+  document.addEventListener('scroll', scrollDrawerHandle, { passive: true })
 
   return () => {
-    document.removeEventListener('scroll', drawer)
     window.removeEventListener('resize', resizeCanvasHeight)
+    document.removeEventListener('scroll', scrollDrawerHandle)
   }
 }

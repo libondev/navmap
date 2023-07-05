@@ -34,7 +34,7 @@ export default ({
   cachedPositions: [],
 
   update (_, { viewport, canvas }) {
-    this.gaps = Math.floor(canvas.width * 0.15)
+    this.gaps = Math.floor(canvas.width * 0.1)
     const headings = Array.from(viewport.querySelectorAll<HTMLElement>(selector))
 
     this.cachedPositions = headings.map(({ offsetHeight, offsetTop }) => ({ offsetHeight, offsetTop }))

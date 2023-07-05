@@ -7,7 +7,7 @@ export type LifecycleFn<PluginContext> = (
 ) => void
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Plugin<Context = Record<string, any>> = {
+export type Plugin<Context = any> = {
   enforce?: 'pre' | 'post'
   init?: LifecycleFn<Context>
   draw?: LifecycleFn<Context>

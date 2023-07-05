@@ -6,6 +6,9 @@
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^5.0.2",
+    "@types/markdown-it": "^12.2.3",
+    "highlight.js": "^11.8.0",
+    "markdown-it": "^13.0.1",
     "vite": "^4.3.9"
   }
 }

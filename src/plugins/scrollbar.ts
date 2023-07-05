@@ -31,7 +31,7 @@ const Scrollbar: Plugin<PluginContext> = {
     ctx.fillStyle = '#00000050'
 
     ctx.beginPath()
-    ctx.roundRect(0, scrollTop * scaleRatio, width, height * scaleRatio, width / 4)
+    ctx.roundRect(0, scrollTop * scaleRatio, width, height * scaleRatio, 8)
     ctx.closePath()
 
     ctx.fill()

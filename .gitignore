@@ -13,3 +13,4 @@ dist
 dist-ssr
 coverage
 *.local
+playground/pnpm-lock.yaml

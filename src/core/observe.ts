@@ -20,9 +20,11 @@ export function createWindowsObserver (
   { config: Options, states: PluginStates, draw: () => void, init: () => void }
 ) {
   const resizeCanvasHeight = () => {
+    states.scrollTop = visualViewport.pageTop
+    states.radius = Math.floor(canvas.width / 3)
     states.scaleRatio = (canvas.height = window.innerHeight) / viewport.offsetHeight
     states.scrollHeight = canvas.height * states.scaleRatio
-    states.scrollTop = visualViewport.pageTop
+
     draw()
   }
 

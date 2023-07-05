@@ -9,14 +9,6 @@ type PluginContext = {
 
 export const Scrollbar: Plugin<PluginContext> = (states) => ({
   init (_, { canvas, viewport }) {
-    // if (__DEV__ && viewport.clientHeight > window.innerHeight) {
-    //   console.warn(
-    //     `[navmap]: The viewport element is higher than the height of the window,
-    //         which means the viewport element may not be a proper scrollable container.
-    //         Usually you need to set "height: 100%;" attribute for html,body element.`
-    //   )
-    // }
-
     viewport.classList.add('hide-scrollbar')
     viewport.appendChild(canvas)
 
@@ -28,10 +20,15 @@ export const Scrollbar: Plugin<PluginContext> = (states) => ({
   },
 
   draw (ctx, { canvas: { width, height } }) {
-    // 绘制视口
-    ctx.strokeStyle = '#f00'
+    const { scrollTop, scaleRatio, radius } = states
 
-    ctx.strokeRect(0, states.scrollTop * states.scaleRatio, width, height * states.scaleRatio)
+    ctx.fillStyle = '#00000060'
+
+    ctx.beginPath()
+    ctx.roundRect(0, scrollTop * scaleRatio, width, height * scaleRatio, radius)
+    ctx.closePath()
+
+    ctx.fill()
   },
 
   destroy (_, { canvas, viewport }) {
@@ -44,16 +41,15 @@ export const Scrollbar: Plugin<PluginContext> = (states) => ({
 
   _pointerDown (ev) {
     ev.preventDefault()
-    const { scrollTop, scrollHeight, scaleRatio } = states
 
     const y = ev.clientY
+    const { scrollTop, scrollHeight, scaleRatio } = states
 
-    // 判断用户是否点击了滚动条
+    // If the clicked position is a scroll bar, there is no need to scroll immediately
     if (y >= scrollTop * scaleRatio && y <= (scrollTop * scaleRatio + scrollHeight)) {
-      // 如果用户点击了滚动条，那么我们只需要记录偏移量，不需要滚动
-      this.deltaY = y - (scrollTop * scaleRatio)
+      this.deltaY = y - scrollTop * scaleRatio
     } else {
-      // 如果用户点击了滚动条以外的位置，那么我们需要立即滚动到目标位置，并且让滚动条在点击位置的中心
+      // Otherwise, scroll to the clicked position immediately, and move the scroll bar to the center position
       this.deltaY = scrollHeight / 2
       document.documentElement.scrollTop = (y - this.deltaY) / scaleRatio
     }
@@ -63,7 +59,6 @@ export const Scrollbar: Plugin<PluginContext> = (states) => ({
   },
 
   _pointerMove ({ clientY }) {
-    // 将在滚动条上的位置转换为视口上的位置
     document.documentElement.scrollTop = (clientY - this.deltaY) / states.scaleRatio
   },
 

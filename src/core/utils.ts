@@ -8,7 +8,7 @@ export function getCanvasElement (options: UserOptions) {
   const canvasEl = Object.assign(
     document.createElement('canvas'),
     {
-      width: options.canvas?.width ?? 20,
+      width: options.canvas?.width ?? 15,
       height: options.canvas?.height ?? window.innerHeight,
       className: `navmap-canvas ${options.canvas?.className || ''}`,
       style: 'position:fixed;right:0;top:0'
@@ -31,7 +31,7 @@ export function getDefaultConfig (options: UserOptions, states: PluginStates) {
   // convert to array
   options.plugins = options.plugins ? Array.isArray(options.plugins) ? options.plugins : [options.plugins] : []
 
-  options.plugins.unshift(Scrollbar)
+  options.plugins.push(Scrollbar)
 
   const normalizedPlugins = options.plugins.map(plugin => plugin(states))
 
@@ -45,6 +45,7 @@ export function getDefaultConfig (options: UserOptions, states: PluginStates) {
 // all plugins share the same states
 export function createPluginStates () {
   return {
+    radius: 0,
     scrollTop: 0,
     scaleRatio: 1,
     scrollHeight: 0
@@ -52,7 +53,7 @@ export function createPluginStates () {
 }
 
 // Gets all the correct plugin hooks
-export function resolvePluginHooks ({ canvas, viewport, plugins }: Options) {
+export function resolvePluginHooks ({ canvas, viewport, plugins }: Options, states: PluginStates) {
   const init = []
   const draw = []
   const update = []
@@ -78,13 +79,14 @@ export function resolvePluginHooks ({ canvas, viewport, plugins }: Options) {
     }
   })
 
-  const ctx = canvas.getContext('2d')
+  const ctx = canvas.getContext('2d') as CanvasRenderingContext2D & { reset: () => void }
   const opt = { canvas, viewport }
 
   return {
     init: () => { init.forEach(fn => fn(ctx, opt)) },
     draw: () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      typeof ctx.reset === 'function' ? ctx.reset() : ctx.restore()
+
       draw.forEach(fn => fn(ctx, opt))
     },
     update: () => { update.forEach(fn => fn(ctx, opt)) },

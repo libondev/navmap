@@ -7,13 +7,13 @@ export type LifecycleFn<PluginContext> = (
 ) => void
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Plugin<Params = Record<string, any>> = (config: PluginStates) => ({
+export type Plugin<Context = Record<string, any>> = (config: PluginStates) => ({
   enforce?: 'pre' | 'post'
-  init?: LifecycleFn<Params>
-  draw?: LifecycleFn<Params>
-  update?: LifecycleFn<Params>
-  destroy?: LifecycleFn<Params>
-} & Params)
+  init?: LifecycleFn<Context>
+  draw?: LifecycleFn<Context>
+  update?: LifecycleFn<Context>
+  destroy?: LifecycleFn<Context>
+} & Context)
 
 export interface UserOptions {
   viewport?: HTMLElement | Element

@@ -8,9 +8,14 @@ export default defineConfig(({ mode }) => {
       minify: true,
       outDir: './dist',
       target: 'modules',
+      cssMinify: true,
       lib: {
-        entry: './src/core/index.ts',
+        entry: [
+          './src/core/index.ts',
+          'src/plugins/headings.ts'
+        ],
         formats: ['es', 'cjs'],
+        minimize: true,
         fileName: '[name]'
       },
       rollupUserOptions: {

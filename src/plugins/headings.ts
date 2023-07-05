@@ -5,7 +5,7 @@ interface PluginContext {
   cachedPositions: Array<{ offsetHeight: number, offsetTop: number }>
 }
 
-export const Headings: Plugin<PluginContext> = (states) => ({
+const Headings: Plugin<PluginContext> = (states) => ({
   gaps: 0,
   cachedPositions: [],
 
@@ -31,3 +31,5 @@ export const Headings: Plugin<PluginContext> = (states) => ({
     ctx.fill()
   }
 })
+
+export default Headings

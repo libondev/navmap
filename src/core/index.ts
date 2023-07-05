@@ -4,8 +4,6 @@ import type { UserOptions } from '../types'
 import { createElementObserver, createWindowsObserver } from './observe'
 import { createPluginStates, getDefaultConfig, resolvePluginHooks } from './utils'
 
-export type * from '../types'
-
 export default function navmap (options: UserOptions = {}) {
   const states = createPluginStates()
 

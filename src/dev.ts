@@ -1,7 +1,7 @@
 import navmap from './core/index'
 import { Headings } from './plugins/headings'
 
-const cleanup = navmap(
+navmap(
   {
     plugins: [
       Headings

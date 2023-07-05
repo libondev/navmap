@@ -7,7 +7,7 @@ type PluginContext = {
   (this: PluginContext, ev: PointerEvent) => void
 >
 
-export const Scrollbar: Plugin<PluginContext> = (states) => ({
+const Scrollbar: Plugin<PluginContext> = (states) => ({
   init (_, { canvas, viewport }) {
     viewport.classList.add('hide-scrollbar')
     viewport.appendChild(canvas)
@@ -66,3 +66,5 @@ export const Scrollbar: Plugin<PluginContext> = (states) => ({
     document.removeEventListener('pointermove', this._pointerMove)
   }
 })
+
+export default Scrollbar

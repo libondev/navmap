@@ -12,6 +12,8 @@ npm install navmap
 
 ```ts
 import navmap from 'navmap'
+// hide scrollbar styles
+import 'navmap/style.css'
 
 const options: Options = { ... }
 

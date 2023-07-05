@@ -1,5 +1,4 @@
-// import { Headings } from '../plugins/headings'
-import { Scrollbar } from '../plugins/scrollbar'
+import Scrollbar from '../plugins/scrollbar'
 import type { Options, UserOptions } from '../types'
 
 export type PluginStates = ReturnType<typeof createPluginStates>

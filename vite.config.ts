@@ -11,8 +11,8 @@ export default defineConfig(({ mode }) => {
       cssMinify: true,
       lib: {
         entry: [
-          './src/core/index.ts',
-          'src/plugins/headings.ts'
+          './src/index.ts',
+          './src/plugins/headings.ts'
         ],
         formats: ['es', 'cjs'],
         minimize: true,

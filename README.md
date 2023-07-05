@@ -1,6 +1,6 @@
 # navmap
 
-Show all the titles on your page in the scrollbar.
+Show all the titles on your page in the scrollbar. [Playground](https://libondev.github.io/navmap)
 
 ## Install
 

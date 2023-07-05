@@ -1,8 +1,8 @@
 import replace from '@rollup/plugin-replace'
 import { defineConfig } from 'vite'
 
-export default defineConfig({
-  root: '../',
+export default defineConfig(({ mode }) => ({
+  root: mode === 'development' ? '../' : './',
   base: '/navmap/',
   server: {
     fs: {
@@ -15,4 +15,4 @@ export default defineConfig({
       __DEV__: true
     })
   ]
-})
+}))

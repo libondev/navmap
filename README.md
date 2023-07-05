@@ -40,7 +40,10 @@ import Headings from 'navmap/headings'
 
 const options: Options = {
   plugins: [
-    Headings
+    Headings({
+      fillStyle: '#ccc',
+      selector: 'h1, h2, h3, h4, h5, p'
+    })
   ]
 }
 
@@ -49,13 +52,19 @@ navmap(options)
 
 ### Plugin Types
 ```ts
+type PluginStates = {
+  scrollTop: number;
+  scaleRatio: number;
+  scrollHeight: number;
+}
+
 export type LifecycleFn<PluginContext> = (
   this: PluginContext,
   ctx: CanvasRenderingContext2D,
-  opt: Pick<Options, 'viewport' | 'canvas'>
+  opt: { states: PluginStates } & Pick<Options, 'viewport' | 'canvas'>
 ) => void
 
-export type Plugin<Context = Record<string, any>> = (config: PluginStates) => ({
+export type Plugin<Context = Record<string, any>> = {
   // The order in which the plug-in executes when invoked
   enforce?: 'pre' | 'post'
 
@@ -71,7 +80,54 @@ export type Plugin<Context = Record<string, any>> = (config: PluginStates) => ({
 
   // The plugin destroys the hook function (which executes only once)
   destroy?: LifecycleFn<Context>
-} & Context)
+} & Context
 ```
 
-Thank you for using.
+## Custom Plugin
+
+The plugin has 4 hook functions, but they are all optional, meaning it is allowed not to set them. If you want to develop your own plugin, you can check the [headings plugin](https://github.com/libondev/navmap/blob/main/src/plugins/headings.ts) example for extended development. The this inside the plug-in hook function points to the plug-in itself, so you can set other properties on the plug-in to help you complete the function you want.
+
+```ts
+import navmap, { Plugin } from 'navmap'
+
+const MyObjectPlugin: Plugin = {
+  init() {
+    // ...
+  },
+  draw() {
+    // ...
+  },
+  update() {
+    // ...
+  },
+  destroy() {
+    // ...
+  }
+}
+
+const MyFunctionPlugin = (): Plugin => ({
+  init() {
+    // ...
+  },
+  draw() {
+    // ...
+  },
+  update() {
+    // ...
+  },
+  destroy() {
+    // ...
+  }
+})
+
+const options: Options = {
+  plugins: [
+    MyObjectPlugin,
+    MyFunctionPlugin()
+  ]
+}
+
+navmap(options)
+```
+
+Thank you for using. Finally, I wish you a good time. If you have any questions or dissatisfaction, you can leave a message in [issues](https://github.com/libondev/navmap/issues) to discuss together.

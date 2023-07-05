@@ -2,16 +2,14 @@ import '../style.css'
 
 import type { UserOptions } from '../types'
 import { createElementObserver, createWindowsObserver } from './observe'
-import { createPluginStates, getDefaultConfig, resolvePluginHooks } from './utils'
+import { getDefaultConfig, resolvePluginHooks } from './utils'
 
 export default function navmap (options: UserOptions = {}) {
-  const states = createPluginStates()
-
-  const config = getDefaultConfig(options, states)
-  const { init, draw, update, destroy } = resolvePluginHooks(config, states)
+  const config = getDefaultConfig(options)
+  const { init, draw, update, destroy } = resolvePluginHooks(config)
 
   const rootObserve = createElementObserver(config, update)
-  const windowsObserve = createWindowsObserver({ config, states, init, draw })
+  const windowsObserve = createWindowsObserver({ config, init, draw })
 
   return () => {
     destroy()

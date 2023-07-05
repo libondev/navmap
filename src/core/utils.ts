@@ -4,7 +4,7 @@ import type { Options, UserOptions } from '../types'
 export type PluginStates = ReturnType<typeof createPluginStates>
 
 export function getCanvasElement (options: UserOptions) {
-  const canvasEl = Object.assign(
+  const canvasElement = Object.assign(
     document.createElement('canvas'),
     {
       width: options.canvas?.width ?? 15,
@@ -14,10 +14,10 @@ export function getCanvasElement (options: UserOptions) {
     }
   )
 
-  return canvasEl
+  return canvasElement
 }
 
-export function getDefaultConfig (options: UserOptions, states: PluginStates) {
+export function getDefaultConfig (options: UserOptions) {
   if (__DEV__ && 'viewport' in options && options.viewport == null) {
     console.warn('[navmap]: The viewport must be a HTML element.')
   }
@@ -30,21 +30,22 @@ export function getDefaultConfig (options: UserOptions, states: PluginStates) {
   // convert to array
   options.plugins = options.plugins ? Array.isArray(options.plugins) ? options.plugins : [options.plugins] : []
 
+  // last draw
   options.plugins.push(Scrollbar)
 
-  const normalizedPlugins = options.plugins.map(plugin => plugin(states))
+  const states = createPluginStates()
 
   return {
     viewport: options.viewport as HTMLElement,
     canvas: getCanvasElement(options),
-    plugins: normalizedPlugins
+    states,
+    plugins: options.plugins
   } as Options
 }
 
 // all plugins share the same states
 export function createPluginStates () {
   return {
-    radius: 0,
     scrollTop: 0,
     scaleRatio: 1,
     scrollHeight: 0
@@ -52,7 +53,7 @@ export function createPluginStates () {
 }
 
 // Gets all the correct plugin hooks
-export function resolvePluginHooks ({ canvas, viewport, plugins }: Options, states: PluginStates) {
+export function resolvePluginHooks ({ canvas, viewport, states, plugins }: Options) {
   const init = []
   const draw = []
   const update = []
@@ -79,7 +80,7 @@ export function resolvePluginHooks ({ canvas, viewport, plugins }: Options, stat
   })
 
   const ctx = canvas.getContext('2d') as CanvasRenderingContext2D & { reset: () => void }
-  const opt = { canvas, viewport }
+  const opt = { canvas, viewport, states }
 
   return {
     init: () => { init.forEach(fn => fn(ctx, opt)) },

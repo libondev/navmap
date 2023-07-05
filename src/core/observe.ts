@@ -1,5 +1,4 @@
 import type { Options } from '../types'
-import type { PluginStates } from './utils'
 
 export function createElementObserver (
   { viewport }: Options,
@@ -16,12 +15,11 @@ export function createElementObserver (
 }
 
 export function createWindowsObserver (
-  { config: { canvas, viewport }, states, draw, init }:
-  { config: Options, states: PluginStates, draw: () => void, init: () => void }
+  { config: { canvas, viewport, states }, draw, init }:
+  { config: Options, draw: () => void, init: () => void }
 ) {
   const resizeCanvasHeight = () => {
     states.scrollTop = visualViewport.pageTop
-    states.radius = Math.floor(canvas.width / 3)
     states.scaleRatio = (canvas.height = window.innerHeight) / viewport.offsetHeight
     states.scrollHeight = canvas.height * states.scaleRatio
 

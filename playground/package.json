@@ -5,7 +5,7 @@
     "build": "vite build"
   },
   "devDependencies": {
-    "navmap": "*",
+    "navmap": "latest",
     "vite": "^4.3.9"
   }
 }

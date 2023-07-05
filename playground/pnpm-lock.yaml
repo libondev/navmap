@@ -1,11 +1,11 @@
 lockfileVersion: 5.3
 
 specifiers:
-  navmap: '*'
+  navmap: latest
   vite: ^4.3.9
 
 devDependencies:
-  navmap: 0.1.0
+  navmap: 0.1.1
   vite: 4.3.9
 
 packages:
@@ -252,8 +252,8 @@ packages:
     hasBin: true
     dev: true
 
-  /navmap/0.1.0:
-    resolution: {integrity: sha512-Z71gZzU27jSBNHC7gRIqo48lMjN+OYLNj3ECoQ7CPjCDHujuCCy9WeUURs7TkTk7spZQ4t/lHujE/q00c3VoqA==}
+  /navmap/0.1.1:
+    resolution: {integrity: sha512-ZhVH02xbQc/xigPiN1V0e4/xuF5SeBxnzEjHNQzfYUATAi7f8rvxv/WFJiuQOcwXTcszYtWW+cGkCZ92VRIv8Q==}
     dev: true
 
   /picocolors/1.0.0:

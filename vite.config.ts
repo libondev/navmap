@@ -28,14 +28,14 @@ export default defineConfig(({ mode }) => {
       }
     },
     plugins: [
-      mode === 'production' && dts({
+      dts({
         staticImport: true,
         entryRoot: './src',
         outputDir: './dist'
       }),
       replace({
         preventAssignment: true,
-        __DEV__: mode === 'development'
+        __DEV__: false
       })
     ]
   }

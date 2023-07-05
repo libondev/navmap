@@ -5,6 +5,7 @@
     "build": "vite build"
   },
   "devDependencies": {
+    "@rollup/plugin-replace": "^5.0.2",
     "navmap": "latest",
     "vite": "^4.3.9"
   }

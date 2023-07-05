@@ -34,8 +34,6 @@ jobs:
         uses: pnpm/action-setup@v2.0.1
         with:
           version: 7.13.4
-      - name: Build PrettyPreview
-        run: pwd && npm i && npm run build
       - name: Build playground
         run: cd ./playground && pnpm install && pnpm run build
       - name: Setup Pages

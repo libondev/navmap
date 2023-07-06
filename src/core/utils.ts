@@ -7,10 +7,10 @@ export function getCanvasElement (options: UserOptions) {
   const canvasElement = Object.assign(
     document.createElement('canvas'),
     {
-      width: options.canvas?.width ?? 15,
-      height: options.canvas?.height ?? window.innerHeight,
-      className: `navmap-canvas ${options.canvas?.className || ''}`,
-      style: 'position:fixed;right:0;top:0'
+      height: window.innerHeight,
+      width: options.canvas?.width || 15,
+      style: 'position:fixed;right:0;top:0',
+      className: options.canvas?.className ?? 'navmap-canvas'
     }
   )
 

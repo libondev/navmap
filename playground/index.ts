@@ -7,7 +7,7 @@ import Headings from '../src/plugins/headings'
 
 navmap({
   canvas: {
-    width: 100
+    width: window.innerWidth * 0.05,
   },
   plugins: [
     Headings({

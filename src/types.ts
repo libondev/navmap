@@ -20,7 +20,6 @@ export interface UserOptions {
   plugins?: Plugin[]
   canvas?: {
     width?: number
-    height?: number
     className?: string
   }
 }

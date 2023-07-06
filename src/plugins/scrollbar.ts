@@ -4,6 +4,8 @@ import type { Plugin } from '../types'
 type PluginContext = {
   deltaY: number
   states: PluginStates
+  _bindPointEvents: () => void
+  _unbindPointEvents: () => void
 } & Record<
   '_pointerDown' | '_pointerMove' | '_pointerUp',
   (this: PluginContext, ev: PointerEvent) => void
@@ -25,6 +27,15 @@ const Scrollbar: Plugin<PluginContext> = {
     this.states = states
 
     canvas.addEventListener('pointerdown', this._pointerDown)
+
+    // TODO: If the device supports touch events, indicates that the current side is mobile,
+    // The 'pointermove' event conflicts with the default scrolling behavior,
+    // There is no perfect solution for the moment, so it is temporarily disabled
+    // 移动端浏览器的滚动行为和PC端不一样，会导致拖动滚动条时页面也会滚动，暂时禁用手机端的滚动行为
+    if ('ontouchstart' in document) {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      this._unbindPointEvents = this._bindPointEvents = () => { }
+    }
   },
 
   draw (ctx, { canvas: { width, height }, states: { scrollTop, scaleRatio } }) {
@@ -40,10 +51,19 @@ const Scrollbar: Plugin<PluginContext> = {
   destroy (_, { canvas, viewport }) {
     viewport.classList.remove('hide-scrollbar')
     viewport.removeChild(canvas)
-    canvas.addEventListener('pointerdown', this._pointerDown)
+    canvas.removeEventListener('pointerdown', this._pointerDown)
   },
 
   deltaY: 0,
+
+  _bindPointEvents () {
+    document.addEventListener('pointermove', this._pointerMove)
+    document.addEventListener('pointerup', this._pointerUp, { once: true })
+  },
+
+  _unbindPointEvents () {
+    document.removeEventListener('pointermove', this._pointerMove)
+  },
 
   _pointerDown (ev) {
     ev.preventDefault()
@@ -60,8 +80,7 @@ const Scrollbar: Plugin<PluginContext> = {
       document.documentElement.scrollTop = (y - this.deltaY) / scaleRatio
     }
 
-    document.addEventListener('pointermove', this._pointerMove)
-    document.addEventListener('pointerup', this._pointerUp, { once: true })
+    this._bindPointEvents()
   },
 
   _pointerMove ({ clientY }) {
@@ -69,7 +88,7 @@ const Scrollbar: Plugin<PluginContext> = {
   },
 
   _pointerUp () {
-    document.removeEventListener('pointermove', this._pointerMove)
+    this._unbindPointEvents()
   }
 }
 

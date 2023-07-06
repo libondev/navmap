@@ -18,12 +18,22 @@ export function createWindowsObserver (
   { config: { canvas, viewport, states }, draw, init }:
   { config: Options, draw: () => void, init: () => void }
 ) {
-  const resizeCanvasHeight = () => {
+  const resizeCanvas = () => {
     states.scrollTop = visualViewport.pageTop
     states.scaleRatio = (canvas.height = window.innerHeight) / viewport.offsetHeight
     states.scrollHeight = canvas.height * states.scaleRatio
 
     draw()
+  }
+
+  let resizeTimeoutId: number
+  const debounceResizeCanvas = () => {
+    resizeTimeoutId ? clearTimeout(resizeTimeoutId) : resizeCanvas()
+
+    resizeTimeoutId = window.setTimeout(() => {
+      resizeCanvas()
+      resizeTimeoutId = null
+    }, 500)
   }
 
   const scrollDrawerHandle = () => {
@@ -35,13 +45,13 @@ export function createWindowsObserver (
   new Promise<void>((resolve) => {
     init() // trigger plugins update hook
     resolve()
-  }).then(resizeCanvasHeight)
+  }).then(debounceResizeCanvas)
 
-  window.addEventListener('resize', resizeCanvasHeight, { passive: true })
+  window.addEventListener('resize', debounceResizeCanvas, { passive: true })
   document.addEventListener('scroll', scrollDrawerHandle, { passive: true })
 
   return () => {
-    window.removeEventListener('resize', resizeCanvasHeight)
+    window.removeEventListener('resize', debounceResizeCanvas)
     document.removeEventListener('scroll', scrollDrawerHandle)
   }
 }

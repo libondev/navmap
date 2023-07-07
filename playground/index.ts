@@ -3,6 +3,7 @@ import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
 
 import navmap from '../src/core/index'
+import Popover from '../src/plugins/popover'
 import Contents from '../src/plugins/contents'
 
 navmap({
@@ -11,18 +12,21 @@ navmap({
   },
   plugins: [
     Contents({
+      radius: 8,
       selectors: {
-        'h1, h2': '#8e9eec',
-        'h3': '#4997f0',
+        'h1,h2,h3': '#8e9eec',
+        'h4,h5': '#42b883',
         'p:nth-child(odd)': '#ec8ebf',
         'p:nth-child(even)': '#f74e63',
         'pre': '#f8b85c',
         'table': '#6acab5'
       }
+    }),
+    Popover({
+      selector: 'h1,h2,h3,h4,h5,h6'
     })
   ]
 })
-
 
 const md = new MarkdownIt({
   highlight: (str, lang) => {
@@ -41,7 +45,12 @@ const html = md.render(`
 \`Playground code\`
 \`\`\`js
 import navmap from 'navmap'
+
+// custom plugin
 import Contents from 'navmap/contents'
+
+// hide scrollbar style
+import 'navmap/style.css'
 
 navmap({
   canvas: {
@@ -49,9 +58,10 @@ navmap({
   },
   plugins: [
     Contents({
+      radius: 8,
       selectors: {
-        'h1, h2': '#8e9eec',
-        'h3': '#4997f0',
+        'h1,h2,h3': '#8e9eec',
+        'h4,h5': '#42b883',
         'p:nth-child(odd)': '#ec8ebf',
         'p:nth-child(even)': '#f74e63',
         'pre': '#f8b85c',
@@ -67,14 +77,11 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum 
 
 ## Heading 2
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
 
 ### Heading 3
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
 
 #### Heading 4
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
 
@@ -85,15 +92,10 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum 
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
 
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
-
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
 
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
 
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
 
 ## Table
 | Tables        | Are           | Cool  |

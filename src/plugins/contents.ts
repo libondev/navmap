@@ -1,11 +1,6 @@
 import type { Plugin } from '../types'
 
-interface PluginContext {
-  gaps: number
-  cachedPositions: Record<string, Array<{ offsetHeight: number, offsetTop: number }>>
-}
-
-interface PluginParams {
+interface Params {
   /**
    * Radius of the rounded rectangle
    * @default 4
@@ -19,10 +14,15 @@ interface PluginParams {
   selectors?: Record<string, string>
 }
 
+interface Context {
+  gaps: number
+  cachedPositions: Record<string, Array<{ offsetHeight: number, offsetTop: number }>>
+}
+
 export default ({
   radius = 4,
   selectors = { 'h1,h2,h3,h4': '#eee' }
-}: PluginParams = {}): Plugin<PluginContext> => ({
+} = {} as Params): Plugin<Context> => ({
   gaps: 0,
   cachedPositions: {},
 

@@ -34,10 +34,14 @@ export function getDefaultConfig (options: UserOptions) {
   options.plugins.push(Scrollbar)
 
   const states = createPluginStates()
+  const canvas = getCanvasElement(options)
+
+  options.viewport.appendChild(canvas)
+  options.viewport.classList.add('hide-scrollbar')
 
   return {
     viewport: options.viewport as HTMLElement,
-    canvas: getCanvasElement(options),
+    canvas,
     states,
     plugins: options.plugins
   } as Options

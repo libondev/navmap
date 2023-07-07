@@ -15,5 +15,8 @@ export default function navmap (options: UserOptions = {}) {
     destroy()
     rootObserve()
     windowsObserve()
+
+    config.viewport.removeChild(config.canvas)
+    config.viewport.classList.remove('hide-scrollbar')
   }
 }

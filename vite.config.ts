@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
       lib: {
         entry: [
           './src/index.ts',
-          './src/plugins/headings.ts'
+          './src/plugins/contents.ts'
         ],
         formats: ['es', 'cjs'],
         minimize: true,

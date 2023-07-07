@@ -3,16 +3,22 @@ import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
 
 import navmap from '../src/core/index'
-import Headings from '../src/plugins/headings'
+import Contents from '../src/plugins/contents'
 
 navmap({
   canvas: {
     width: window.innerWidth * 0.05,
   },
   plugins: [
-    Headings({
-      fillStyle: '#eee',
-      selector: 'h1, h2, h3, p:nth-child(even), pre'
+    Contents({
+      selectors: {
+        'h1, h2': '#8e9eec',
+        'h3': '#4997f0',
+        'p:nth-child(odd)': '#ec8ebf',
+        'p:nth-child(even)': '#f74e63',
+        'pre': '#f8b85c',
+        'table': '#6acab5'
+      }
     })
   ]
 })
@@ -32,6 +38,30 @@ const md = new MarkdownIt({
 })
 
 const html = md.render(`
+\`Playground code\`
+\`\`\`js
+import navmap from 'navmap'
+import Contents from 'navmap/contents'
+
+navmap({
+  canvas: {
+    width: 100
+  },
+  plugins: [
+    Contents({
+      selectors: {
+        'h1, h2': '#8e9eec',
+        'h3': '#4997f0',
+        'p:nth-child(odd)': '#ec8ebf',
+        'p:nth-child(even)': '#f74e63',
+        'pre': '#f8b85c',
+        'table': '#6acab5'
+      }
+    })
+  ]
+})
+\`\`\`
+
 # Heading 1
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
 
@@ -57,8 +87,6 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum 
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
 
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
-
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
 
@@ -67,23 +95,13 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum 
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel debitis illum voluptatum dolor totam nobis dolorem, officiis, tenetur, deleniti dolorum excepturi? Dolor dolorem minus asperiores praesentium amet pariatur dicta.
 
+## Table
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
 
-\`\`\`js
-import navmap from 'navmap'
-import Headings from 'navmap/headings'
-
-navmap({
-  canvas: {
-    width: 100
-  },
-  plugins: [
-    Headings({
-      fillStyle: '#eee',
-      selector: 'h1, h2, h3, p:first-child'
-    })
-  ]
-})
-\`\`\`
 `)
 
 document.querySelector('#app')!.innerHTML = html

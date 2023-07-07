@@ -32,15 +32,15 @@ unmount()
 
 ### Basic Plugin
 
-The library has a built-in [scrollbar plugin](https://github.com/libondev/navmap/blob/main/src/plugins/scrollbar.ts), and an additional [headings plugin](https://github.com/libondev/navmap/blob/main/src/plugins/headings.ts) is available, and you can also build your own plugin according to the effect you want.
+The library has a built-in [scrollbar plugin](https://github.com/libondev/navmap/blob/main/src/plugins/scrollbar.ts), and an additional [contents plugin](https://github.com/libondev/navmap/blob/main/src/plugins/Contents.ts) is available, and you can also build your own plugin according to the effect you want.
 
-**use `Headings` plugin**
+**use `Contents` plugin**
 ```ts
-import Headings from 'navmap/headings'
+import Contents from 'navmap/contents'
 
 const options: Options = {
   plugins: [
-    Headings({
+    Contents({
       fillStyle: '#ccc',
       selector: 'h1, h2, h3, h4, h5, p'
     })
@@ -85,7 +85,7 @@ export type Plugin<Context = Record<string, any>> = {
 
 ## Custom Plugin
 
-The plugin has 4 hook functions, but they are all optional, meaning it is allowed not to set them. If you want to develop your own plugin, you can check the [headings plugin](https://github.com/libondev/navmap/blob/main/src/plugins/headings.ts) example for extended development. The this inside the plug-in hook function points to the plug-in itself, so you can set other properties on the plug-in to help you complete the function you want.
+The plugin has 4 hook functions, but they are all optional, meaning it is allowed not to set them. If you want to develop your own plugin, you can check the [contents plugin](https://github.com/libondev/navmap/blob/main/src/plugins/contents.ts) example for extended development. The this inside the plug-in hook function points to the plug-in itself, so you can set other properties on the plug-in to help you complete the function you want.
 
 ```ts
 import navmap, { Plugin } from 'navmap'

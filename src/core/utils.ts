@@ -8,7 +8,7 @@ export function getCanvasElement (options: UserOptions) {
     document.createElement('canvas'),
     {
       height: window.innerHeight,
-      width: options.canvas?.width || 15,
+      width: Math.floor((options.canvas?.width || 15) * window.devicePixelRatio),
       style: 'position:fixed;right:0;top:0',
       className: options.canvas?.className ?? 'navmap-canvas'
     }

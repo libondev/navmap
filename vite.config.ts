@@ -2,7 +2,7 @@ import replace from '@rollup/plugin-replace'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(() => {
   return {
     build: {
       minify: true,
@@ -10,10 +10,10 @@ export default defineConfig(({ mode }) => {
       target: 'modules',
       cssMinify: true,
       lib: {
-        entry: [
-          './src/index.ts',
-          './src/plugins/contents.ts'
-        ],
+        entry: {
+          index: './src/index.ts',
+          'plugins/contents': './src/plugins/contents.ts'
+        },
         formats: ['es', 'cjs'],
         minimize: true,
         fileName: '[name]'

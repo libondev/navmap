@@ -77,7 +77,7 @@ const Scrollbar: Plugin<Context> = {
     document.documentElement.scrollTop = (clientY - this.deltaY) / this.states.scaleRatio
   },
 
-  _pointerUp (ev) {
+  _pointerUp () {
     document.removeEventListener('pointermove', this._pointerMove)
   }
 }

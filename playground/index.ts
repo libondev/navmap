@@ -2,17 +2,18 @@ import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
 
-import navmap from '../src/core/index'
-import Popover from '../src/plugins/popover'
-import Contents from '../src/plugins/contents'
+import 'navmap/style.css'
+
+import navmap from 'navmap'
+import Contents from 'navmap/contents'
 
 navmap({
   canvas: {
-    width: window.innerWidth * 0.05,
+    // width: window.innerWidth * 0.03,
   },
   plugins: [
     Contents({
-      radius: 8,
+      radius: 0,
       selectors: {
         'h1,h2,h3': '#8e9eec',
         'h4,h5': '#42b883',
@@ -22,9 +23,9 @@ navmap({
         'table': '#6acab5'
       }
     }),
-    Popover({
-      selector: 'h1,h2,h3,h4,h5,h6'
-    })
+    // Popover({
+    //   selector: 'h1,h2,h3,h4,h5,h6'
+    // })
   ]
 })
 

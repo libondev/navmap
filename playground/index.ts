@@ -2,7 +2,7 @@ import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
 
-import 'navmap/style.css'
+import '../src/style.css'
 
 import navmap from '../src/core'
 import Contents from '../src/plugins/contents'

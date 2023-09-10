@@ -4,8 +4,8 @@ import 'highlight.js/styles/github.css'
 
 import 'navmap/style.css'
 
-import navmap from 'navmap'
-import Contents from 'navmap/contents'
+import navmap from '../src/core'
+import Contents from '../src/plugins/contents'
 
 navmap({
   canvas: {
